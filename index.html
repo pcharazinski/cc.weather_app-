@@ -14,5 +14,38 @@
         <li>test</li>
     </ul>
     
+ <script>
+const linkDoJSON =
+"https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json";
+
+let miasta = [];
+
+fetch(linkDoJSON)
+    .then(blob => blob.json())
+    .then(dane => miasta = dane)
+
+const szukanaFraza = document.querySelector('.wyszukiwarka')
+const podpowiedzi = document.querySelector('.podpowiedzi')
+
+
+function dopasuj(co, arr) {
+    return arr.filter(miasto => {
+        const reg = new RegExp(co, 'gi')
+        return miasto.name.match(reg)
+    })
+}
+
+function wyswietlDopasowanie() {
+    const wynikiPasujace = dopasuj(this.value, miasta)
+    const paskiPodpowiedzi = wynikiPasujace.map(miasto => {
+        return `<li><span>${miasto.name}<span></li>`
+    }).join('')
+    podpowiedzi.innerHTML = paskiPodpowiedzi
+    }
+
+
+szukanaFraza.addEventListener('keyup', wyswietlDopasowanie)
+</script>
+    
 </body>
 </html>
