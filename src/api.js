@@ -7,11 +7,11 @@
                 
                 weather.name = data.city.name; // name fetching
                 weather.temperature = data.list[0].main.temp; //temperature fetching
-                weather.descr = `${data.list[0].weather[0].main}, ${data.list[0].weather[0].description}`;
-                weather.humidity = `${data.list[0].main.humidity}%`;
-                weather.pressure = `${data.list[0].main.pressure}hPa`;
-                weather.icon = data.list[0].weather[0].icon;
-                weather.windSpeed = `${data.list[0].wind.speed}km/h`
+                weather.descr = `${data.list[0].weather[0].main}, ${data.list[0].weather[0].description}`; //descriptions concatenation
+                weather.humidity = `${data.list[0].main.humidity}%`; // humidity fetching
+                weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
+                weather.icon = data.list[0].weather[0].icon; // icon id string
+                weather.windSpeed = `${data.list[0].wind.speed}km/h`   //wind speed fetching
                 return data;
             })
             .catch(error => console.error(error))
