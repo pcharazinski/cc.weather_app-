@@ -7,7 +7,9 @@
 
     fetch(jsonLink)
         .then(blob => blob.json())
-        .then(data => citiesList = data)
+        .then(data => citiesList = data.map(e => {
+            return e.name;
+        }))
 
     const phrase = document.querySelector('.search')
     const hints = document.querySelector('.hints')
@@ -16,14 +18,14 @@
     function fit(what, arr) {
         return arr.filter(e => {
             const reg = new RegExp(what, 'gi')
-            return e.name.match(reg)
+            return e.match(reg)
         })
     }
 
     function showProposition() {
         const searchResults = fit(this.value, citiesList)
         const addHint = searchResults.map(e => {
-            return `<li><span>${e.name}<span></li>`
+            return `<li><span>${e}<span></li>`
         }).join('')
         hints.innerHTML = addHint
     }
@@ -42,6 +44,7 @@
         getWeather(phrase.value)
         console.log(weather)
         console.log(phrase.value)
+        logToDocument();
     })
 
 
@@ -60,6 +63,10 @@
             })
             .catch(error => console.error(error))
     }
+
+      function logToDocument() {
+          return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
+      }
 
     let weather = {}
 
