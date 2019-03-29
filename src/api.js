@@ -20,15 +20,15 @@
         })
     }
 
-    function wyswietlDopasowanie() {
-        const wynikiPasujace = fit(this.value, citiesList)
-        const paskiPodpowiedzi = wynikiPasujace.map(e => {
+    function showProposition() {
+        const searchResults = fit(this.value, citiesList)
+        const addHint = searchResults.map(e => {
             return `<li><span>${e.name}<span></li>`
         }).join('')
-        hints.innerHTML = paskiPodpowiedzi
+        hints.innerHTML = addHint
     }
 
-    phrase.addEventListener('keyup', wyswietlDopasowanie)
+    phrase.addEventListener('keyup', showProposition)
 
     hints.addEventListener('click', e => {
         if (e.target) {
@@ -38,8 +38,10 @@
     })
 
     submit.addEventListener('click', e => {
+        console.log(phrase.value)
         getWeather(phrase.value)
         console.log(weather)
+        console.log(phrase.value)
     })
 
 
