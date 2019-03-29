@@ -1,44 +1,44 @@
 
 
-    const linkDoJSON =
+    const jsonLink =
         "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json";
 
-    let miasta = [];
+    let citiesList = [];
 
-    fetch(linkDoJSON)
+    fetch(jsonLink)
         .then(blob => blob.json())
-        .then(dane => miasta = dane)
+        .then(data => citiesList = data)
 
-    const szukanaFraza = document.querySelector('.wyszukiwarka')
-    const podpowiedzi = document.querySelector('.podpowiedzi')
+    const phrase = document.querySelector('.search')
+    const hints = document.querySelector('.hints')
     const submit = document.querySelector('.submit')
 
-    function dopasuj(co, arr) {
-        return arr.filter(miasto => {
-            const reg = new RegExp(co, 'gi')
-            return miasto.name.match(reg)
+    function fit(what, arr) {
+        return arr.filter(e => {
+            const reg = new RegExp(what, 'gi')
+            return e.name.match(reg)
         })
     }
 
     function wyswietlDopasowanie() {
-        const wynikiPasujace = dopasuj(this.value, miasta)
-        const paskiPodpowiedzi = wynikiPasujace.map(miasto => {
-            return `<li><span>${miasto.name}<span></li>`
+        const wynikiPasujace = fit(this.value, citiesList)
+        const paskiPodpowiedzi = wynikiPasujace.map(e => {
+            return `<li><span>${e.name}<span></li>`
         }).join('')
-        podpowiedzi.innerHTML = paskiPodpowiedzi
+        hints.innerHTML = paskiPodpowiedzi
     }
 
-    szukanaFraza.addEventListener('keyup', wyswietlDopasowanie)
+    phrase.addEventListener('keyup', wyswietlDopasowanie)
 
-    podpowiedzi.addEventListener('click', e => {
+    hints.addEventListener('click', e => {
         if (e.target) {
-            szukanaFraza.value = e.target.innerText
-            podpowiedzi.innerHTML = "<ul></ul>"
+            phrase.value = e.target.innerText
+            hints.innerHTML = "<ul></ul>"
         }
     })
 
     submit.addEventListener('click', e => {
-        getWeather(szukanaFraza.value)
+        getWeather(phrase.value)
         console.log(weather)
     })
 
