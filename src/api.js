@@ -80,6 +80,12 @@
       }
 
 
+    submit.addEventListener('click', e => {
+        getWeather(phrase.value)
+        if (weather.name = phrase.value) {
+            console.log(weather)
+        }
+    })
 //Response from API about blocking
 // {
 //     "cod": 429,
