@@ -1,9 +1,17 @@
 
+    let weather = {};
+    let citiesList = [];
 
     const jsonLink =
         "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json";
+    
+    const apiID = '766db9013b296138aa05335799e4d729';
+    const units = 'metric';
 
-    let citiesList = [];
+    const phrase = document.querySelector('.search');
+    const hints = document.querySelector('.hints');
+    const submit = document.querySelector('.submit');
+    
 
     fetch(jsonLink)
         .then(blob => blob.json())
@@ -11,9 +19,7 @@
             return e.name;
         }))
 
-    const phrase = document.querySelector('.search')
-    const hints = document.querySelector('.hints')
-    const submit = document.querySelector('.submit')
+    
 
     function fit(what, arr) {
         return arr.filter(e => {
@@ -30,7 +36,9 @@
         hints.innerHTML = addHint
     }
 
-    phrase.addEventListener('keyup', showProposition)
+    phrase.addEventListener('keyup', function(){
+        setTimeout(showProposition, 2000)
+    })
 
     hints.addEventListener('click', e => {
         if (e.target) {
@@ -41,21 +49,24 @@
 
     submit.addEventListener('click', e => {
         console.log(phrase.value)
-        getWeather(phrase.value)
-        console.log(weather)
-        console.log(phrase.value)
-        logToDocument();
+        if(phrase.value){              //wrzucone w if statement, żeby nie było erroru przy submitowaniu pustego pola
+            getWeather(phrase.value)
+            console.log(weather)
+            console.log(phrase.value)
+            logToDocument();
+        }
+        
     })
 
 
     function getWeather(cityName) {
-        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=766db9013b296138aa05335799e4d729&units=metric`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
+        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=${apiID}&units=${units}`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
             .then(response => response.json())
             .then(data => {
 
                 weather.name = data.city.name; // name fetching
                 weather.temperature = data.list[0].main.temp; //temperature fetching
-                weather.descr = `${data.list[0].weather[0].main}, ${data.list[0].weather[0].description}`; //descriptions concatenation
+                weather.descr = `${data.list[0].weather[0].main}`; //descriptions concatenation
                 weather.humidity = `${data.list[0].main.humidity}%`; // humidity fetching
                 weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
@@ -68,7 +79,6 @@
           return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
       }
 
-    let weather = {}
 
 //Response from API about blocking
 // {
