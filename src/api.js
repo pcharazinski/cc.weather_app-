@@ -64,9 +64,9 @@
             })
             .catch(error => console.error(error))
     }
-
+    
       function logToDocument() {
-          return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
+          return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
       }
 
 
