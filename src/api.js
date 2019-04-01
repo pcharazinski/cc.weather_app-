@@ -13,14 +13,11 @@
     const hints = document.querySelector('.hints');
     const submit = document.querySelector('.submit');
     
-
     fetch(jsonLink)
         .then(blob => blob.json())
         .then(data => citiesList = data.map(e => {
             return e.name;
         }))
-
-    
 
     function fit(what, arr) {
         return arr.filter(e => {
@@ -69,8 +66,6 @@
           return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
       }
 
-
-
     submit.addEventListener('click', e => {
         getWeather(phrase.value)
         if (weather.name = phrase.value) {
@@ -84,3 +79,26 @@
 //         "message": "Your account is temporary blocked due to exceeding of requests limitation of your subscription type. 
 //     Please choose the proper subscription http://openweathermap.org/price"
 // }
+
+$(document).ready(function() {
+    //Autocomplete
+    $(function() {
+      $.ajax({
+        type: 'GET',
+        url: 'https://restcountries.eu/rest/v2/all?fields=name',
+        success: function(response) {
+          var countryArray = response;
+          var dataCountry = {};
+          for (var i = 0; i < countryArray.length; i++) {
+            //console.log(countryArray[i].name);
+            dataCountry[countryArray[i].name] = countryArray[i].flag; //countryArray[i].flag or null
+          }
+          $('input.autocomplete').autocomplete({
+            data: dataCountry,
+            limit: 10, // The max amount of results that can be shown at once. Default: Infinity.
+            minLength: 2
+          });
+        }
+      });
+    });
+  });
