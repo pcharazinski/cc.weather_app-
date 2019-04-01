@@ -7,6 +7,7 @@
     
     const apiID = '766db9013b296138aa05335799e4d729';
     const units = 'metric';
+    const lang = 'pl';
 
     const phrase = document.querySelector('.search');
     const hints = document.querySelector('.hints');
@@ -49,13 +50,13 @@
     })
 
     function getWeather(cityName) {
-        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=${apiID}&units=${units}`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
+        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=${apiID}&units=${units}&lang=${lang}`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
             .then(response => response.json())
             .then(data => {
-
+                console.log(data);
                 weather.name = data.city.name; // name fetching
                 weather.temperature = `${data.list[0].main.temp}°C`; //temperature fetching
-                weather.descr = descrChange(data.list[0].weather[0].main); //descriptions concatenation
+                weather.descr = data.list[0].weather[0].description; //descriptions concatenation
                 weather.humidity = `${data.list[0].main.humidity}%`; // humidity fetching
                 weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
@@ -68,22 +69,6 @@
           return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
       }
 
-      function descrChange (descr) {
-            switch (descr){
-                case 'Clear':
-                    return 'Bezchmurnie';
-                case 'Clouds':
-                    return 'Pochmurnie';
-                case 'Rain':
-                case 'Drizzle':
-                case 'Mist':
-                    return 'Deszczowo';
-                case 'Thunderstorm':
-                    return 'Burza z piorunami';
-                case 'Snow': 
-                    return 'Śnieg';
-            }
-      }
 
 
     submit.addEventListener('click', e => {
