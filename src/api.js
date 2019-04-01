@@ -36,9 +36,10 @@
         hints.innerHTML = addHint
     }
 
-    phrase.addEventListener('keyup', function(){
-        setTimeout(showProposition, 2000)
-    })
+    // phrase.addEventListener('keyup', function(){
+    //     setTimeout(showProposition, 2000)
+    // })
+    phrase.addEventListener('keyup', showProposition)
 
     hints.addEventListener('click', e => {
         if (e.target) {
@@ -47,26 +48,14 @@
         }
     })
 
-    submit.addEventListener('click', e => {
-        console.log(phrase.value)
-        if(phrase.value){              //wrzucone w if statement, żeby nie było erroru przy submitowaniu pustego pola
-            getWeather(phrase.value)
-            console.log(weather)
-            console.log(phrase.value)
-            logToDocument();
-        }
-        
-    })
-
-
     function getWeather(cityName) {
         fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=${apiID}&units=${units}`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
             .then(response => response.json())
             .then(data => {
 
                 weather.name = data.city.name; // name fetching
-                weather.temperature = data.list[0].main.temp; //temperature fetching
-                weather.descr = `${data.list[0].weather[0].main}`; //descriptions concatenation
+                weather.temperature = `${data.list[0].main.temp}°C`; //temperature fetching
+                weather.descr = descrChange(data.list[0].weather[0].main); //descriptions concatenation
                 weather.humidity = `${data.list[0].main.humidity}%`; // humidity fetching
                 weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
@@ -79,11 +68,29 @@
           return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
       }
 
+      function descrChange (descr) {
+            switch (descr){
+                case 'Clear':
+                    return 'Bezchmurnie';
+                case 'Clouds':
+                    return 'Pochmurnie';
+                case 'Rain':
+                case 'Drizzle':
+                case 'Mist':
+                    return 'Deszczowo';
+                case 'Thunderstorm':
+                    return 'Burza z piorunami';
+                case 'Snow': 
+                    return 'Śnieg';
+            }
+      }
+
 
     submit.addEventListener('click', e => {
         getWeather(phrase.value)
         if (weather.name = phrase.value) {
             console.log(weather)
+            logToDocument();
         }
     })
 //Response from API about blocking
