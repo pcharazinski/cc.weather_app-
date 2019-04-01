@@ -11,7 +11,7 @@
 
     const phrase = document.querySelector('.search');
     const hints = document.querySelector('.hints');
-    const submit = document.querySelector('.submit');
+    const submit = document.querySelector('#submit');
     
     fetch(jsonLink)
         .then(blob => blob.json())
