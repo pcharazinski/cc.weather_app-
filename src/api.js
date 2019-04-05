@@ -63,13 +63,17 @@
             })
             .catch(error => console.error(error))
     }
-    
+
     function logToDocument() {
         return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
     }
 
     submit.addEventListener('click', e => {
+        if(citiesList.includes(`${phrase.value}`)) {
         getWeather(phrase.value, (data) => logToDocument()(data))
+        } else {
+            alert("Podaj poprawną nazwę miasta!")
+        }
     })
 //Response from API about blocking
 // {
