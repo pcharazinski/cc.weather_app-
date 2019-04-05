@@ -31,7 +31,8 @@
         const addHint = searchResults.map(e => {
             return `<li><span>${e}<span></li>`
         }).join('')
-        hints.innerHTML = addHint
+        let phraseLength = phrase.value.length
+        if (phraseLength >= 3) hints.innerHTML = addHint
     }
 
     // phrase.addEventListener('keyup', function(){
@@ -46,7 +47,7 @@
         }
     })
 
-    function getWeather(cityName) {
+    function getWeather(cityName, callback) {
         fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${cityName}&APPID=${apiID}&units=${units}&lang=${lang}`) //units=metric zapewnia temperaturę w stopniach celsjusza - defaultowo temperatura jest w kelvinach
             .then(response => response.json())
             .then(data => {
@@ -58,20 +59,17 @@
                 weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
                 weather.windSpeed = `${data.list[0].wind.speed}km/h` //wind speed fetching
+                callback({weather})
             })
             .catch(error => console.error(error))
     }
     
-      function logToDocument() {
-          return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
-      }
+    function logToDocument() {
+        return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
+    }
 
     submit.addEventListener('click', e => {
-        getWeather(phrase.value)
-        if (weather.name = phrase.value) {
-            console.log(weather)
-            logToDocument();
-        }
+        getWeather(phrase.value, (data) => logToDocument()(data))
     })
 //Response from API about blocking
 // {
