@@ -27,12 +27,15 @@
     }
 
     function showProposition() {
-        const searchResults = fit(this.value, citiesList)
-        const addHint = searchResults.map(e => {
-            return `<li><span>${e}<span></li>`
-        }).join('')
         let phraseLength = phrase.value.length
-        if (phraseLength >= 3) hints.innerHTML = addHint
+        if (phraseLength >= 3){
+            const searchResults = fit(this.value, citiesList)
+            searchResults.slice(0,11)
+            const addHint = searchResults.map(e => {
+                return `<li><span>${e}<span></li>`
+            }).join('')
+            hints.innerHTML = addHint
+        } 
     }
 
     // phrase.addEventListener('keyup', function(){
@@ -65,7 +68,8 @@
     }
 
     function logToDocument() {
-        return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.icon}, ${weather.windSpeed}`;
+        hints.innerHTML="";
+        return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.windSpeed}`;
     }
 
     submit.addEventListener('click', e => {
