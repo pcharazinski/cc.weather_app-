@@ -32,12 +32,54 @@
 
  /*mapka z lokalizacją i mapka z wpisywanym miastem*/
 #map {
-    width: 800px;
-    height: 400px;
     margin-top: 20px;
+    width: 600px;
+    height: 300px;
+    margin-top: 20px;
+    float: left;
+    margin-left:10px;
+
 }
 #map2 {
-    width: 800px;
-    height: 400px;
     margin-top: 20px;
+    width: 600px;
+    height: 300px;
+    margin-top: 20px;
+    float:left;
+    margin-left:10px;
+}
+#detect {
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #26a69a;
+    text-align: center;
+    letter-spacing: .5px;
+    font-size:14px;
+    outline: 0;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 16px;
+    text-transform: uppercase;
+}
+
+#miejsce {
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #26a69a;
+    text-align: center;
+    letter-spacing: .5px;
+    font-size:14px;
+    outline: 0;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 16px;
+    text-transform: uppercase;
 }
