@@ -13,7 +13,7 @@
     const hints = document.querySelector('.hints');
     const submit = document.querySelector('#submit');
     
-    fetch(jsonLink)
+    fetch('./src/current.city.list.min.json')
         .then(blob => blob.json())
         .then(data => citiesList = data.map(e => {
             return e.name;
@@ -56,10 +56,10 @@
             .then(data => {
                 console.log(data);
                 weather.name = data.city.name; // name fetching
-                weather.temperature = `${data.list[0].main.temp}°C`; //temperature fetching
+                weather.temperature = `${Math.round(data.list[0].main.temp)}°C`; //temperature fetching
                 weather.descr = data.list[0].weather[0].description; //descriptions concatenation
                 weather.humidity = `${data.list[0].main.humidity}%`; // humidity fetching
-                weather.pressure = `${data.list[0].main.pressure}hPa`; //pressure fetching
+                weather.pressure = `${Math.round(data.list[0].main.pressure)}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
                 weather.windSpeed = `${data.list[0].wind.speed}km/h` //wind speed fetching
                 callback({weather})
