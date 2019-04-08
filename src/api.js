@@ -12,8 +12,11 @@
     const phrase = document.querySelector('.search');
     const hints = document.querySelector('.hints');
     const submit = document.querySelector('#submit');
-    
-    fetch('./src/current.city.list.min.json')
+
+    var map2 
+    var currentCityName
+
+    fetch(jsonLink)
         .then(blob => blob.json())
         .then(data => citiesList = data.map(e => {
             return e.name;
@@ -62,7 +65,8 @@
                 weather.pressure = `${Math.round(data.list[0].main.pressure)}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
                 weather.windSpeed = `${data.list[0].wind.speed}km/h` //wind speed fetching
-                callback({weather})
+                callback({ weather })      
+           
             })
             .catch(error => console.error(error))
     }
@@ -75,10 +79,24 @@
     submit.addEventListener('click', e => {
         if(citiesList.includes(`${phrase.value}`)) {
         getWeather(phrase.value, (data) => logToDocument()(data))
-        } else {
+        currentCityName=phrase.value
+
+    } else {
             alert("Podaj poprawną nazwę miasta!")
         }
     })
+
+    miejsce.addEventListener('click', e =>{
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'address': currentCityName}, function (results, status) {
+            if (status === 'OK') {
+                map2.setCenter(results[0].geometry.location);
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+        document.getElementById('map2').style.display = "block";
+    });
 //Response from API about blocking
 // {
 //     "cod": 429,
@@ -108,3 +126,56 @@ $(document).ready(function() {
       });
     });
   });
+
+//autolokalizacja
+$(document).ready(function () {
+    var geo = navigator.geolocation;
+    if (geo) {
+
+        $('#detect').on('click', function () {
+
+            geo.getCurrentPosition(function (location) {
+                // zapisanie szerokości i długości geograficznej do zmiennych
+                var lat = location.coords.latitude;
+                var lng = location.coords.longitude;
+
+                // opcje mapy
+                var mapOptions = {
+                    // wielkość zoomu
+                    zoom: 15,
+                    // współrzędne punktu, na którym wyśrodkowana jest mapa
+                    center: new google.maps.LatLng(lat, lng),
+                };
+
+                // pobranie mapy do zmiennej
+                var mapElement = document.getElementById('map');
+
+                // Utworzenie mapy Google używając elementu #map i opcji zdefiniowanych w tablicy
+                var map = new google.maps.Map(mapElement, mapOptions);
+
+                // dodanie znacznika
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    map: map,
+                    title: 'Mapa Devcorner'
+                });
+
+            });
+
+        });
+
+    } else {
+        console.log('niedostępny');
+    }
+
+});
+
+function initAutocomplete() {
+    map2 = new google.maps.Map(document.getElementById('map2'), {
+        center: { lat: 51.107883, lng: 17.038538 }, //współrzędne Wrocławia
+        zoom: 13,
+        mapTypeId: 'roadmap'
+    });
+    document.getElementById('map2').style.display = "none";
+
+}
