@@ -15,6 +15,7 @@
 
     var map2 
     var currentCityName
+    
 
     fetch(jsonLink)
         .then(blob => blob.json())
@@ -33,8 +34,8 @@
         let phraseLength = phrase.value.length
         if (phraseLength >= 3){
             const searchResults = fit(this.value, citiesList)
-            searchResults.slice(0,11)
-            const addHint = searchResults.map(e => {
+            
+            const addHint = searchResults.slice(0,8).map(e => {
                 return `<li><span>${e}<span></li>`
             }).join('')
             hints.innerHTML = addHint
@@ -65,20 +66,27 @@
                 weather.pressure = `${Math.round(data.list[0].main.pressure)}hPa`; //pressure fetching
                 weather.icon = data.list[0].weather[0].icon; // icon id string
                 weather.windSpeed = `${data.list[0].wind.speed}km/h` //wind speed fetching
-                callback({ weather })      
-           
+                weather.id = data.list[0].weather[0].id; 
+                callback({ weather })    
+                 
             })
             .catch(error => console.error(error))
     }
 
+    
     function logToDocument() {
+        
         hints.innerHTML="";
-        return document.querySelector('.results').innerHTML = "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>"+`${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.windSpeed}`;
+        console.log(weather.id)
+                return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.windSpeed}, ${weather.id}`+ "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>";
+                
+        
     }
 
     submit.addEventListener('click', e => {
         if(citiesList.includes(`${phrase.value}`)) {
         getWeather(phrase.value, (data) => logToDocument()(data))
+        background();
         currentCityName=phrase.value
 
     } else {
@@ -96,6 +104,7 @@
             }
         });
         document.getElementById('map2').style.display = "block";
+        
     });
 //Response from API about blocking
 // {
@@ -104,28 +113,7 @@
 //     Please choose the proper subscription http://openweathermap.org/price"
 // }
 
-$(document).ready(function() {
-    //Autocomplete
-    $(function() {
-      $.ajax({
-        type: 'GET',
-        url: 'https://restcountries.eu/rest/v2/all?fields=name',
-        success: function(response) {
-          var countryArray = response;
-          var dataCountry = {};
-          for (var i = 0; i < countryArray.length; i++) {
-            //console.log(countryArray[i].name);
-            dataCountry[countryArray[i].name] = countryArray[i].flag; //countryArray[i].flag or null
-          }
-          $('input.autocomplete').autocomplete({
-            data: dataCountry,
-            limit: 10, // The max amount of results that can be shown at once. Default: Infinity.
-            minLength: 2
-          });
-        }
-      });
-    });
-  });
+
 
 //autolokalizacja
 $(document).ready(function () {
@@ -179,3 +167,29 @@ function initAutocomplete() {
     document.getElementById('map2').style.display = "none";
 
 }
+function background(){
+var i=Math.floor(Math.random() * 12);
+
+
+var backgroundVideo = document.getElementById('bg_src');
+var icon = document.getElementsByClassName('icon');
+console.log(weather.icon[0])
+if (weather.id == 800) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/007/024/original/timelapse_clouds.mp4');
+    icon[0].src = 'img/sunrise.svg';
+
+} else if (weather.id == 500 || 501 || 511 || 520 || 300 ||301 || 302 || 310 ||311 || 312||313|| 314||321 || 502|| 503 || 504|| 521|| 522|| 531) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/002/396/original/raindrops-on-a-window.mp4');
+    icon[0].src = 'img/raining.svg';
+} else if (weather.id == 600|| 601|| 602|| 611|| 612|| 615|| 616|| 620||621||622) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/004/960/original/Winter_Branch_4K_Living_Background.mp4');
+    icon[0].src = 'img/snowflake.svg';
+} else if (weather.id ==  200|| 201||202|| 210||211|| 212|| 221|| 230|| 231|| 232) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/001/590/original/00042.mp4');
+    icon[0].src = 'img/bolt.svg';
+} else if (weather.id == 801 || 802 || 803 || 804) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/004/956/original/Sunray_Clouds_4K_Living_Background.mp4');
+    icon[0].src = 'img/clouds(1).svg';} 
+}
+
+
