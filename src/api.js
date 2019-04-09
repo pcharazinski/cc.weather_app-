@@ -67,8 +67,7 @@
                 weather.icon = data.list[0].weather[0].icon; // icon id string
                 weather.windSpeed = `${data.list[0].wind.speed}km/h` //wind speed fetching
                 weather.id = data.list[0].weather[0].id; 
-                callback({ weather })    
-                 
+                callback({ weather })                 
             })
             .catch(error => console.error(error))
     }
@@ -85,10 +84,9 @@
 
     submit.addEventListener('click', e => {
         if(citiesList.includes(`${phrase.value}`)) {
+        currentCityName = phrase.value
         getWeather(phrase.value, (data) => logToDocument()(data))
         background();
-        currentCityName=phrase.value
-
     } else {
             alert("Podaj poprawną nazwę miasta!")
         }
@@ -100,11 +98,9 @@
             if (status === 'OK') {
                 map2.setCenter(results[0].geometry.location);
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
             }
         });
         document.getElementById('map2').style.display = "block";
-        
     });
 //Response from API about blocking
 // {
@@ -112,7 +108,6 @@
 //         "message": "Your account is temporary blocked due to exceeding of requests limitation of your subscription type. 
 //     Please choose the proper subscription http://openweathermap.org/price"
 // }
-
 
 
 //autolokalizacja
@@ -147,7 +142,7 @@ $(document).ready(function () {
                     map: map,
                     title: 'Mapa Devcorner'
                 });
-
+                pogodaLokalizacji(lat, lng)
             });
 
         });
@@ -157,6 +152,38 @@ $(document).ready(function () {
     }
 
 });
+
+
+
+function pogodaLokalizacji(lat, lng) {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({
+        'latLng': latlng
+    }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+                //wyszukiwanie w types[] atrybutu locality - czyli nazwa miasta
+                for (var i = 0; i < results[0].address_components.length; i++) {
+                    for (var b = 0; b < results[0].address_components[i].types.length; b++) {
+                        if (results[0].address_components[i].types[b] == "locality") {
+                            city = results[0].address_components[i];
+                            break;
+                        }
+                    }
+                }
+            //wywołanie pogody
+            getWeather(city.long_name, (data) => logToDocument()(data))
+            background();
+
+            } else {
+                alert("Nie znaleziono miejscowości!");
+            }
+        } else {
+            alert("Geocoder failed due to: " + status);
+        }
+    });
+}
 
 function initAutocomplete() {
     map2 = new google.maps.Map(document.getElementById('map2'), {
