@@ -19,7 +19,7 @@ body {
 
 .results{
   
-   font-size: 16px;
+   font-size: 14px;
    line-height: 350%;
 justify-content: center;
 text-align: center;
@@ -40,8 +40,8 @@ text-align: center;
     opacity: 0.4
 }
 img{
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     margin-top: 20px;
     
 }
