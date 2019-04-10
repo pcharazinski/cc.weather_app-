@@ -19,7 +19,7 @@ body {
 
 .results{
   
-   font-size: 18px;
+   font-size: 16px;
    line-height: 350%;
 justify-content: center;
 text-align: center;
@@ -40,8 +40,8 @@ text-align: center;
     opacity: 0.4
 }
 img{
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     margin-top: 20px;
     
 }
@@ -49,7 +49,7 @@ img{
     display: flex;
     justify-content: center;
     align-content: center;
-    background-color: #26a69940;
+    background-color: #0000001d;
     
 }
 
