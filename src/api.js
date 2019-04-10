@@ -15,8 +15,7 @@
 
     var map2 
     var currentCityName
-    
-
+    let weathericons;
     fetch(jsonLink)
         .then(blob => blob.json())
         .then(data => citiesList = data.map(e => {
@@ -72,26 +71,24 @@
             .catch(error => console.error(error))
     }
 
-    
     function logToDocument() {
         
         hints.innerHTML="";
-        console.log(weather.id)
-                return document.querySelector('.results').innerHTML = `${weather.name}, ${weather.temperature}, ${weather.descr}, ${weather.humidity}, ${weather.pressure}, ${weather.windSpeed}, ${weather.id}`+ "<img src='http://openweathermap.org/img/w/"+weather.icon+".png'>";
+        console.log(weather.id); background();
+                return document.querySelector('.results').innerHTML = `<img src='${weathericons}'><br> W <b>${weather.name}</b> jest obecnie <b>${weather.temperature}</b>, warunki pogodowe to <b>${weather.descr}</b>, wilgotność wynosi <b>${weather.humidity}</b>, ciśnienie ma wartość <b>${weather.pressure}</b>, a prędkość wiatru to <b>${weather.windSpeed}</b>`;
                 
-        
     }
 
     submit.addEventListener('click', e => {
         if(citiesList.includes(`${phrase.value}`)) {
         currentCityName = phrase.value
         getWeather(phrase.value, (data) => logToDocument()(data))
-        background();
+        
     } else {
             alert("Podaj poprawną nazwę miasta!")
         }
     })
-
+    
     miejsce.addEventListener('click', e =>{
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({ 'address': currentCityName}, function (results, status) {
@@ -108,7 +105,6 @@
 //         "message": "Your account is temporary blocked due to exceeding of requests limitation of your subscription type. 
 //     Please choose the proper subscription http://openweathermap.org/price"
 // }
-
 
 //autolokalizacja
 $(document).ready(function () {
@@ -153,8 +149,6 @@ $(document).ready(function () {
 
 });
 
-
-
 function pogodaLokalizacji(lat, lng) {
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(lat, lng);
@@ -173,9 +167,9 @@ function pogodaLokalizacji(lat, lng) {
                     }
                 }
             //wywołanie pogody
-            getWeather(city.long_name, (data) => logToDocument()(data))
-            background();
-
+            
+            getWeather(city.long_name, (data) => logToDocument()(data));
+            
             } else {
                 alert("Nie znaleziono miejscowości!");
             }
@@ -195,28 +189,24 @@ function initAutocomplete() {
 
 }
 function background(){
-var i=Math.floor(Math.random() * 12);
-
 
 var backgroundVideo = document.getElementById('bg_src');
-var icon = document.getElementsByClassName('icon');
-console.log(weather.icon[0])
+
 if (weather.id == 800) {
     backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/007/024/original/timelapse_clouds.mp4');
-    icon[0].src = 'img/sunrise.svg';
+    weathericons = './img/sunrise.svg';
 
-} else if (weather.id == 500 || 501 || 511 || 520 || 300 ||301 || 302 || 310 ||311 || 312||313|| 314||321 || 502|| 503 || 504|| 521|| 522|| 531) {
-    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/002/396/original/raindrops-on-a-window.mp4');
-    icon[0].src = 'img/raining.svg';
-} else if (weather.id == 600|| 601|| 602|| 611|| 612|| 615|| 616|| 620||621||622) {
-    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/004/960/original/Winter_Branch_4K_Living_Background.mp4');
-    icon[0].src = 'img/snowflake.svg';
-} else if (weather.id ==  200|| 201||202|| 210||211|| 212|| 221|| 230|| 231|| 232) {
-    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/001/590/original/00042.mp4');
-    icon[0].src = 'img/bolt.svg';
-} else if (weather.id == 801 || 802 || 803 || 804) {
+} else if (weather.id == 803 || weather.id == 801 || weather.id == 802 || weather.id == 804) {
     backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/004/956/original/Sunray_Clouds_4K_Living_Background.mp4');
-    icon[0].src = 'img/clouds(1).svg';} 
+    weathericons = './img/clouds.svg';} 
+    else if (weather.id == 500 || weather.id == 501 || weather.id == 511 || weather.id == 520 || weather.id == 300 ||weather.id == 301 || weather.id == 302 || weather.id == 310 ||weather.id == 311 ||weather.id == 312||weather.id ==313||weather.id ==314||weather.id ==321 || weather.id ==502|| weather.id ==503 || weather.id ==504|| weather.id ==521|| weather.id ==522|| weather.id ==531) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/002/396/original/raindrops-on-a-window.mp4');
+    weathericons = './img/raining.svg';
+} else if (weather.id == 600|| weather.id ==601|| weather.id ==602|| weather.id ==611|| weather.id ==612|| weather.id ==615|| weather.id ==616|| weather.id ==620||weather.id ==621||weather.id ==622) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/004/960/original/Winter_Branch_4K_Living_Background.mp4');
+    weathericons = './img/snowflake.svg';
+} else if (weather.id ==  200|| weather.id ==201||weather.id ==202|| weather.id ==210||weather.id ==211|| weather.id ==212|| weather.id ==221|| weather.id ==230|| weather.id ==231|| weather.id ==232) {
+    backgroundVideo.setAttribute('src', 'https://static.videezy.com/system/resources/previews/000/001/590/original/00042.mp4');
+    weathericons = './img/bolt.svg';
+} 
 }
-
-
